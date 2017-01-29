@@ -7,7 +7,10 @@ defmodule KV.Mixfile do
      elixir: "~> 1.4",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     deps: deps()]
+     deps: deps(),
+     test_coverage: [tool: ExCoveralls],
+     preferred_cli_env: [coveralls: :test],
+   ]
   end
 
   # Configuration for the OTP application
@@ -28,6 +31,6 @@ defmodule KV.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    []
+    [{:excoveralls, "~> 0.6", only: :test}]
   end
 end
