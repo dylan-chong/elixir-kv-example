@@ -19,19 +19,6 @@ defmodule KV.Bucket do
   end
 
   def delete(pid, key) do
-    # 3rd version (from guide)
     Agent.get_and_update(pid, &Map.pop(&1, key))
-
-    # 2nd version
-    # originalVal = get(pid, key)
-    # Agent.get_and_update(pid, fn data ->
-      # updatedData = Map.put(data, key, nil)
-      # {originalVal, updatedData}
-    # end)
-
-    # Original version
-    # originalval = get(pid, key)
-    # agent.update(pid, &map.put(&1, key, nil))
-    # originalVal
   end
 end
