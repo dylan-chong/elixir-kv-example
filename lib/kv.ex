@@ -1,18 +1,5 @@
 defmodule KV do
   @moduledoc """
-  Documentation for KV.
+  Key-Value storage
   """
-
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> KV.hello
-      :world
-
-  """
-  def hello do
-    :world
-  end
 end
