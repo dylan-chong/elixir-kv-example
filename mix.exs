@@ -1,4 +1,8 @@
 defmodule KV.Mixfile do
+  @moduledoc """
+  Mixfile
+  """
+
   use Mix.Project
 
   def project do
@@ -9,8 +13,7 @@ defmodule KV.Mixfile do
      start_permanent: Mix.env == :prod,
      deps: deps(),
      test_coverage: [tool: ExCoveralls],
-     preferred_cli_env: [coveralls: :test],
-   ]
+     preferred_cli_env: [coveralls: :test]]
   end
 
   # Configuration for the OTP application
@@ -31,6 +34,8 @@ defmodule KV.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    [{:excoveralls, "~> 0.6", only: :test}]
+    [{:excoveralls, "~> 0.6", only: :test},
+     {:credo, "~> 0.5", only: [:dev, :test]}]
   end
+
 end
