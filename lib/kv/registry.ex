@@ -1,4 +1,10 @@
 defmodule KV.Registry do
+
+
+  # TODO AFTER make typespecs for the bucket and registry data types
+
+
+
   @moduledoc """
   For registering processes with strings instead of atoms
   """
@@ -7,7 +13,7 @@ defmodule KV.Registry do
 
   ## Client methods
 
-  @spec start_link :: {:ok, pid}
+  @spec start_link :: {:ok, GenServer.server}
   def start_link do
     GenServer.start_link(__MODULE__, :ok)
   end
@@ -21,7 +27,7 @@ defmodule KV.Registry do
   Looks up the bucket pid for `name` stored in `server`
   Can return `:error`
   """
-  @spec lookup(pid, String.t) :: {:ok, pid} | :error
+  @spec lookup(GenServer.server, String.t) :: {:ok, pid} | :error
   def lookup(server, name) do
     GenServer.call(server, {:lookup, name})
   end
@@ -29,7 +35,7 @@ defmodule KV.Registry do
   @doc """
   Ensures there is a bucket associated to the given `name` in `server`
   """
-  @spec create(pid, String.t) :: any
+  @spec create(GenServer.server, String.t) :: any
   def create(server, name) do
     GenServer.cast(server, {:create, name})
   end
@@ -46,7 +52,8 @@ defmodule KV.Registry do
     {:ok, name_to_bucket_map}
   end
 
-  @spec handle_call({:lookup, String.t}, none, map) :: {:reply, any} # TODO
+  @spec handle_call({:lookup, String.t}, GenServer.from, map)
+  :: {:reply, any, map}
   def handle_call({:lookup, name}, _from, name_to_bucket_map) do
     {:reply, Map.fetch(name_to_bucket_map, name), name_to_bucket_map}
   end
