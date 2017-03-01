@@ -23,7 +23,7 @@ defmodule KV.Registry do
   Looks up the bucket pid for `name` stored in `server`
   Can return `:error`
   """
-  @spec lookup(registry, String.t) :: {:ok, Bucket.bucket} | :error
+  @spec lookup(registry, String.t) :: {:ok, KV.Bucket.bucket} | :error
   def lookup(server, name) do
     GenServer.call(server, {:lookup, name})
   end
@@ -60,7 +60,7 @@ defmodule KV.Registry do
       {:noreply, name_to_bucket_map}
     end
 
-    {:ok, bucket} = Bucket.start_link
+    {:ok, bucket} = KV.Bucket.start_link
     {:noreply, Map.put(name_to_bucket_map, name, bucket)}
   end
 end

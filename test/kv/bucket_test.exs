@@ -1,4 +1,7 @@
 defmodule KV.BucketTest do
+  @moduledoc """
+  """
+
   use ExUnit.Case, async: true
 
   setup do

@@ -9,6 +9,8 @@ defmodule KV.RegistryTest do
     {:ok, registry: registry}
   end
 
+  # Unit Tests
+
   test "lookup/2 should return `:error` for non-existent bucket ",
   %{registry: registry} do
     assert KV.Registry.lookup(registry, "shopping") == :error
@@ -28,4 +30,35 @@ defmodule KV.RegistryTest do
     assert created_bucket == looked_up_bucket
   end
 
+  # Behavioural Tests
+
+  test "Feature: Spawns buckets", %{registry: registry} do
+    # Given a registry that
+    assert KV.Registry.lookup(registry, "shopping") == :error
+
+    # When
+    KV.Registry.create(registry, "shopping")
+    # And
+    {:ok, bucket} = KV.Registry.lookup(registry, "shopping")
+    # Then
+    assert is_pid(bucket)
+
+    # When
+    KV.Bucket.put(bucket, "milk", 1)
+    # Then
+    assert KV.Bucket.get(bucket, "milk") == 1
+  end
+
+  test "Feature: Removes buckets when they stop", %{registry: registry} do
+    # Given a registry
+    # And a bucket
+    KV.Registry.create(registry, "shopping")
+    {:ok, bucket} = KV.Registry.lookup(registry, "shopping")
+
+    # When
+    Agent.stop(bucket)
+    # Then
+    assert KV.Registry.lookup(registry, "shopping") == :error
+  end
 end
+
