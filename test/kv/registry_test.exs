@@ -4,8 +4,8 @@ defmodule KV.RegistryTest do
   use ExUnit.Case, async: true
   require IEx
 
-  setup do
-    {:ok, registry} = KV.Registry.start_link()
+  setup context do
+    {:ok, registry} = KV.Registry.start_link(context.test)
     {:ok, registry: registry}
   end
 
@@ -24,7 +24,8 @@ defmodule KV.RegistryTest do
   test "lookup/2 should return {:ok, pid} for an existing bucket" do
     created_bucket = KV.Bucket.start_link()
 
-    {:ok, registry} = KV.Registry.start_link(%{"shopping" => created_bucket})
+    {:ok, registry} = KV.Registry.start_link(:with,
+                                             %{"shopping" => created_bucket})
 
     {:ok, looked_up_bucket} = KV.Registry.lookup(registry, "shopping")
     assert created_bucket == looked_up_bucket

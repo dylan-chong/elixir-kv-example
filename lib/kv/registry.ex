@@ -9,13 +9,13 @@ defmodule KV.Registry do
 
   ## Client methods
 
-  @spec start_link :: {:ok, registry}
-  def start_link do
-    GenServer.start_link(__MODULE__, :ok)
+  @spec start_link(any) :: {:ok, registry}
+  def start_link(name) do
+    GenServer.start_link(__MODULE__, :ok, name: name)
   end
 
-  @spec start_link(map) :: {:ok, registry}
-  def start_link(name_to_bucket_map) do
+  @spec start_link(:with, map) :: {:ok, registry}
+  def start_link(:with, name_to_bucket_map) do
     GenServer.start_link(__MODULE__, name_to_bucket_map)
   end
 
